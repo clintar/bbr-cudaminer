@@ -177,7 +177,7 @@ extern struct work_restart *work_restart;
 extern const char jsonrpc_2;
 extern char rpc2_id[65];
 
-#define WILD_KECCAK_SCRATCHPAD_BUFFSIZE  (64<<20)
+#define WILD_KECCAK_SCRATCHPAD_BUFFSIZE  (345<<20)
 //#define WILD_KECCAK_SCRATCHPAD_BUFFSIZE (1 << 25)
 struct  __attribute__((__packed__)) scratchpad_hi
 {
@@ -272,6 +272,7 @@ struct stratum_ctx {
     pthread_mutex_t work_lock;
 };
 
+bool stratum_keepalived(struct stratum_ctx *sctx , const char *rpc2_id);
 bool stratum_socket_full(struct stratum_ctx *sctx, int timeout);
 bool stratum_send_line(struct stratum_ctx *sctx, char *s);
 char *stratum_recv_line(struct stratum_ctx *sctx);
