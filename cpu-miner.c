@@ -1454,12 +1454,12 @@ static bool stratum_handle_response(char *buf) {
         json_t *status = NULL;
         if(res_val) 
             status = json_object_get(res_val, "status");
-        const char *s = json_string_value(status);
-        if ( !strcmp(s, "KEEPALIVED") ) {
-            applog(LOG_INFO, "Keepalive receveid");
-            goto out;
-        }
         if(status) {
+            const char *s = json_string_value(status);
+            if ( !strcmp(s, "KEEPALIVED") ) {
+                applog(LOG_INFO, "Keepalive receveid");
+                goto out;
+            }
             valid = !strcmp(s, "OK") && json_is_null(err_val);
         } else {
             valid = json_is_null(err_val);
@@ -1600,6 +1600,7 @@ static void *stratum_thread(void *userdata) {
         if ( opt_keepalive && !stratum_socket_full(&stratum, 90)) { 
             applog(LOG_INFO, "Keepalive send....");
             stratum_keepalived(&stratum,rpc2_id);
+            s = NULL;
         }
         if (!stratum_socket_full(&stratum, 300)) {
              applog(LOG_ERR, "Stratum connection timed out");
